@@ -18,7 +18,7 @@ class AuthTokenDomainService(
     }
 
     suspend fun getBy(accountId: Long, accessToken: String): AuthToken? {
-        return authTokenRepository.findBy(accessToken)
+        return authTokenRepository.findBy(accountId, accessToken)
     }
 
     suspend fun update(authToken: AuthToken): AuthToken {
