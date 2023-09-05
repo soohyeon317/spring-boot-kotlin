@@ -61,8 +61,7 @@ class AccountService(
     // 현재 로그인 계정을 로그아웃할 수도 있고, 현재 로그인 계정과 관련된 AccessToken을 지정하여 로그아웃 시키는 것도 허용.
     override suspend fun signOut(command: AccountAuthenticationCommand.SignOut): AuthToken {
         val accountId = authenticationService.getAccountId()
-        val currentHeaderAccessToken = authenticationService.getDetails().accessToken
-        val selectedAccessToken = command.accessToken ?: currentHeaderAccessToken
+        val selectedAccessToken = command.accessToken
         val authToken = authTokenDomainService.getBy(accountId, selectedAccessToken)
             ?: throw AuthTokenNotFoundException(ErrorCode.ACCESS_TOKEN_NOT_FOUND)
         return authTokenDomainService.inactivate(authToken)

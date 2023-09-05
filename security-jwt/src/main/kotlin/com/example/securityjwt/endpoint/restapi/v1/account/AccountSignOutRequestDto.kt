@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AccountSignOutRequestDto(
-    val accessToken: String? = null
+    val accessToken: String
 )
