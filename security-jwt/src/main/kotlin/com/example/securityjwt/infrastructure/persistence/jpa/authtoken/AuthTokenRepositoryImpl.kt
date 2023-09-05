@@ -22,7 +22,4 @@ class AuthTokenRepositoryImpl(
 
     override suspend fun findBy(accountId: Long, accessToken: String): AuthToken? =
         springDataAuthTokenRepository.findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(accountId, accessToken)?.toAccessToken()
-
-    override suspend fun existsBy(accessToken: String): Boolean =
-        springDataAuthTokenRepository.existsByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken)
 }

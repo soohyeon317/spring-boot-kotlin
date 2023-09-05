@@ -8,5 +8,4 @@ interface AuthTokenRepository {
     suspend fun save(authToken: AuthToken, inactivate: Boolean? = null): AuthToken
     suspend fun findBy(accessToken: String): AuthToken?
     suspend fun findBy(accountId: Long, accessToken: String): AuthToken?
-    suspend fun existsBy(accessToken: String): Boolean
 }

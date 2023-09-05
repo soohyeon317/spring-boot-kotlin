@@ -1,6 +1,9 @@
 package com.example.securityjwt.configuration.authentication
 
+import com.example.securityjwt.exception.ErrorCode
+import com.example.securityjwt.exception.UnAuthorizedException
 import kotlinx.coroutines.reactor.mono
+import kotlinx.coroutines.runBlocking
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -19,6 +22,11 @@ class AuthenticationManager(
             .switchIfEmpty(Mono.empty())
             .flatMap { Mono.just(mono {
                 val authenticationToken = authenticationService.toAuthenticationToken(token)
+                runBlocking {
+                    if (!authenticationService.isSaved(token)) {
+                        throw UnAuthorizedException(ErrorCode.ACCESS_TOKEN_NOT_FOUND)
+                    }
+                }
                 ///////////////////////
                 // (토큰 Claims 처리 로직 부분)
                 ///////////////////////
