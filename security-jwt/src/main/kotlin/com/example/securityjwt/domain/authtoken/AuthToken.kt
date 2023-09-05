@@ -2,7 +2,6 @@ package com.example.securityjwt.domain.authtoken
 
 import java.time.LocalDateTime
 
-
 data class AuthToken(
     val id: Long?,
     val accountId: Long,
@@ -10,6 +9,7 @@ data class AuthToken(
     val refreshToken: String?,
     val createdAt: LocalDateTime?
 ) {
+
     constructor(accountId: Long, accessToken: String, refreshToken: String) :
             this(
                 id = null,
