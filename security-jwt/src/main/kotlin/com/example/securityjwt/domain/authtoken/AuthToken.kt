@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 data class AuthToken(
     val id: Long?,
     val accountId: Long,
-    val accessToken: String?,
-    val refreshToken: String?,
+    val accessToken: String,
+    val refreshToken: String,
     val createdAt: LocalDateTime?
 ) {
 

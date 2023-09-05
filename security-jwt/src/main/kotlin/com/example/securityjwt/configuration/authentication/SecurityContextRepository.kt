@@ -23,8 +23,8 @@ class SecurityContextRepository(
         return Mono.justOrEmpty(exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION))
             .filter { auth -> auth.startsWith(AuthenticationToken.TOKEN_GRANT_TYPE, true) }
             .flatMap { auth ->
-                val token: String = auth.replace(AuthenticationToken.TOKEN_GRANT_TYPE, "", true).trim()
-                val authentication: Authentication = UsernamePasswordAuthenticationToken(token, token)
+                val accessToken: String = auth.replace(AuthenticationToken.TOKEN_GRANT_TYPE, "", true).trim()
+                val authentication: Authentication = UsernamePasswordAuthenticationToken(accessToken, accessToken)
                 authenticationManager.authenticate(authentication).map { s -> SecurityContextImpl(s) }
             }
     }

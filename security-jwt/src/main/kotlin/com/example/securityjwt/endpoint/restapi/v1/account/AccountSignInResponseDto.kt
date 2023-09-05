@@ -10,7 +10,7 @@ data class AccountSignInResponseDto(
 ) {
 
     constructor(authToken: AuthToken): this(
-        accessToken = authToken.accessToken!!,
-        refreshToken = authToken.refreshToken!!
+        accessToken = authToken.accessToken,
+        refreshToken = authToken.refreshToken
     )
 }

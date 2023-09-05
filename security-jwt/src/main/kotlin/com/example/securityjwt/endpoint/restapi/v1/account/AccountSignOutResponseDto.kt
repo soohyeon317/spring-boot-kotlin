@@ -9,6 +9,6 @@ data class AccountSignOutResponseDto(
 ) {
 
     constructor(authToken: AuthToken): this(
-        accessToken = authToken.accessToken!!
+        accessToken = authToken.accessToken
     )
 }

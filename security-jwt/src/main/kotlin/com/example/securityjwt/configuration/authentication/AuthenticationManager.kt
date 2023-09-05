@@ -3,7 +3,6 @@ package com.example.securityjwt.configuration.authentication
 import com.example.securityjwt.exception.ErrorCode
 import com.example.securityjwt.exception.UnAuthorizedException
 import kotlinx.coroutines.reactor.mono
-import kotlinx.coroutines.runBlocking
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -16,31 +15,23 @@ class AuthenticationManager(
 ) : ReactiveAuthenticationManager {
 
     override fun authenticate(authentication: Authentication): Mono<Authentication> {
-        val token = authentication.credentials.toString()
-        return Mono.just(authenticationService.validateToken(token, AuthenticationTokenType.ACCESS))
-            .filter { valid -> valid == true }
-            .switchIfEmpty(Mono.empty())
-            .flatMap { Mono.just(mono {
-                val authenticationToken = authenticationService.toAuthenticationToken(token)
-                runBlocking {
-                    if (!authenticationService.isSaved(token)) {
-                        throw UnAuthorizedException(ErrorCode.ACCESS_TOKEN_NOT_FOUND)
-                    }
-                }
-                ///////////////////////
-                // (토큰 Claims 처리 로직 부분)
-                ///////////////////////
-                authenticationToken
-            }) }
-            .flatMap {
-                it.flatMap { it2 ->
-                    val auth = UsernamePasswordAuthenticationToken(it2.ownerId, null, null)
-                    auth.details = AuthenticationDetails(
-                        ownerId = it2.ownerId,
-                        accessToken = token
-                    )
-                    Mono.just(auth)
-                }
+        return mono {
+            val accessToken = authentication.credentials.toString()
+            if (!authenticationService.validateToken(accessToken, AuthenticationTokenType.ACCESS)) {
+                throw UnAuthorizedException(ErrorCode.ACCESS_TOKEN_INVALID)
+            } else if (!authenticationService.isSaved(accessToken)) {
+                throw UnAuthorizedException(ErrorCode.ACCESS_TOKEN_NOT_FOUND)
             }
+            accessToken
+        }.flatMap {
+            val authenticationToken = authenticationService.toAuthenticationToken(it)
+            Mono.just(authenticationToken)
+        }.flatMap {
+            val auth = UsernamePasswordAuthenticationToken(it.ownerId, null, null)
+            auth.details = AuthenticationDetails(
+                ownerId = it.ownerId
+            )
+            Mono.just(auth)
+        }
     }
 }

@@ -22,8 +22,8 @@ data class AuthTokenEntity(
             this(
                 id = authToken.id,
                 accountId = authToken.accountId,
-                accessToken = authToken.accessToken!!,
-                refreshToken = authToken.refreshToken!!,
+                accessToken = authToken.accessToken,
+                refreshToken = authToken.refreshToken,
                 createdAt = if (authToken.id == null) {
                     LocalDateTime.now()
                 } else {
