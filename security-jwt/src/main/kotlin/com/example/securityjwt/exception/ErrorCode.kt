@@ -10,7 +10,8 @@ enum class ErrorCode(val message: String) {
     RESOURCE_FORBIDDEN("Resource is forbidden."),
     ACCESS_TOKEN_EXPIRED("AccessToken is expired."),
     REFRESH_TOKEN_EXPIRED("RefreshToken is expired."),
-    TOKEN_INVALID("Token is invalid."),
+    ACCESS_TOKEN_INVALID("AccessToken is invalid."),
+    REFRESH_TOKEN_INVALID("RefreshToken is invalid."),
 
     // ACCOUNT
     EMAIL_INVALID("Email is invalid."),

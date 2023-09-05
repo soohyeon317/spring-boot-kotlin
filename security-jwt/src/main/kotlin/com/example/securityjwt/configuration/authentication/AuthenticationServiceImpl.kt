@@ -36,17 +36,24 @@ class AuthenticationServiceImpl(
                 is MalformedJwtException,
                 is SignatureException,
                 is UnsupportedJwtException,
-                is IllegalArgumentException -> throw UnAuthorizedException(ErrorCode.TOKEN_INVALID)
+                is IllegalArgumentException -> {
+                    val errorCode = if (tokenType == AuthenticationTokenType.REFRESH) {
+                        ErrorCode.REFRESH_TOKEN_INVALID
+                    } else {
+                        ErrorCode.ACCESS_TOKEN_INVALID
+                    }
+                    throw UnAuthorizedException(errorCode)
+                }
                 else -> throw e
             }
         }
     }
 
-    override fun toAuthenticationToken(token: String): AuthenticationToken =
-        AuthenticationToken(jwtUtil.parseJWTClaims(token))
+    override fun toAuthenticationToken(accessToken: String): AuthenticationToken =
+        AuthenticationToken(jwtUtil.parseJWTClaims(accessToken))
 
-    override fun isSaved(token: String): Boolean = runBlocking {
-        authTokenDomainService.getBy(token) != null
+    override fun isSaved(accessToken: String): Boolean = runBlocking {
+        authTokenDomainService.getBy(accessToken) != null
     }
 
     override fun createToken(ownerId: Long, tokenType: AuthenticationTokenType): String =
