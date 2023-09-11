@@ -6,9 +6,9 @@ spring:
     activate:
       on-profile: local
   r2dbc:
-    url: r2dbc:mysql://localhost:3306/spring_boot_kotlin?serverZoneId=Asia/Seoul&sslMode=DISABLED
-    username: admin
-    password: modoric9876!
+    url: r2dbc:mysql://
+    username:
+    password:
     pool:
       validation-query: SELECT 1
       initial-size: 2
