@@ -4,22 +4,26 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
 class JWTUtil {
 
-    companion object {
-        const val SECRET_KEY: String = "u53VdWTefhj7OveEGPA0G8pbwMmDI8r84ZKkVJ7JGV5zKGvHFrgJoMBtBwPLIXtrjYo0e6vaNLl8cCAbaj097HWyANCmN8KMkrndoHOYADS0tCe8Am65pgffUEjfwdFD3yXUCu4rVstyDaIxXgHLXfriTw9srx33b0NHkr1NaGLC0T23JzXIDJzxpvTkM2zlaUaXCdO7LT9CLGuGlMEVt5uFKPT1Qd67DDmFBNTHd7UccCq1FrSKkwQ8yTQ0htq5"
-        const val ISSUER: String = "issuer"
-        const val AUDIENCE: String = "audience"
-        const val ACCESS_TOKEN_VALIDITY_SECONDS: Int = 3600 // 1시간
-        const val REFRESH_TOKEN_VALIDITY_SECONDS: Int = 2592000 // 30일
-    }
+    @Value("\${jwt.secret-key}")
+    lateinit var secretKey: String
+    @Value("\${jwt.issuer}")
+    lateinit var issuer: String
+    @Value("\${jwt.audience}")
+    lateinit var audience: String
+    @Value("\${jwt.access-token-validity-in-seconds}")
+    val accessTokenValidityInSeconds: Int? = null
+    @Value("\${jwt.refresh-token-validity-in-seconds}")
+    val refreshTokenValidityInSeconds: Int? = null
 
     fun parseJWTClaims(token: String): Claims = Jwts.parserBuilder()
-        .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY)))
+        .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey)))
         .build()
         .parseClaimsJws(token)
         .body
@@ -28,15 +32,15 @@ class JWTUtil {
         val calendar = Calendar.getInstance()
         calendar.time = Date()
         if (tokenType == AuthenticationTokenType.ACCESS) {
-            calendar.add(Calendar.SECOND, ACCESS_TOKEN_VALIDITY_SECONDS)
+            calendar.add(Calendar.SECOND, accessTokenValidityInSeconds!!)
         } else {
-            calendar.add(Calendar.SECOND, REFRESH_TOKEN_VALIDITY_SECONDS)
+            calendar.add(Calendar.SECOND, refreshTokenValidityInSeconds!!)
         }
         val expiration = calendar.time
         return Jwts.builder()
-            .setIssuer(ISSUER)
+            .setIssuer(issuer)
             .setSubject(ownerId.toString())
-            .setAudience(AUDIENCE)
+            .setAudience(audience)
             .setExpiration(expiration)
             .setIssuedAt(Date())
             .setId(UUID.randomUUID().toString())
@@ -46,7 +50,7 @@ class JWTUtil {
                     AuthenticationToken.TOKEN_TYPE_CLAIM_KEY to tokenType
                 )
             )
-            .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY)))
+            .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey)))
             .compact()
     }
 }

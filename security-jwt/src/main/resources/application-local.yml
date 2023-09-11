@@ -14,3 +14,10 @@ spring:
       initial-size: 2
       max-idle-time: 25s
       max-life-time: 30s
+
+jwt:
+  secret-key: "u53VdWTefhj7OveEGPA0G8pbwMmDI8r84ZKkVJ7JGV5zKGvHFrgJoMBtBwPLIXtrjYo0e6vaNLl8cCAbaj097HWyANCmN8KMkrndoHOYADS0tCe8Am65pgffUEjfwdFD3yXUCu4rVstyDaIxXgHLXfriTw9srx33b0NHkr1NaGLC0T23JzXIDJzxpvTkM2zlaUaXCdO7LT9CLGuGlMEVt5uFKPT1Qd67DDmFBNTHd7UccCq1FrSKkwQ8yTQ0htq5"
+  issuer: "issuer"
+  audience: "audience"
+  access-token-validity-in-seconds: 3600 # 1시간
+  refresh-token-validity-in-seconds: 2592000 # 30일
