@@ -3,13 +3,16 @@ package com.example.securityjwt.endpoint.restapi.v1.account
 import com.example.securityjwt.application.account.AccountAuthenticationCommand
 import com.example.securityjwt.application.account.AccountAuthenticationUseCase
 import jakarta.validation.Valid
+import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RequestMapping("/api/v1/account")
 @RestController
 class AccountController(
-    private val accountAuthenticationUseCase: AccountAuthenticationUseCase
+    private val accountAuthenticationUseCase: AccountAuthenticationUseCase,
+    private val messageSource: MessageSource
 ) {
 
     @PostMapping("/sign-up")
@@ -29,11 +32,14 @@ class AccountController(
     suspend fun signIn(
         @RequestBody @Valid request: AccountSignInRequestDto
     ): AccountSignInResponseDto {
-        return AccountSignInResponseDto(
+        val responseDto = AccountSignInResponseDto(
             accountAuthenticationUseCase.signIn(
                 AccountAuthenticationCommand.SignIn(
                     request.email,
                     request.password)))
+        println(messageSource.getMessage("sign-in.success", listOf(responseDto.accessToken, responseDto.refreshToken).toTypedArray(), Locale.ENGLISH))
+        println(messageSource.getMessage("sign-in.success", listOf(responseDto.accessToken, responseDto.refreshToken).toTypedArray(), Locale.KOREA))
+        return responseDto
     }
 
     @PostMapping("/sign-in/refresh")
