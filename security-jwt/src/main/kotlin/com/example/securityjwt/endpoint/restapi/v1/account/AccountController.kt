@@ -6,7 +6,6 @@ import jakarta.validation.Valid
 import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RequestMapping("/api/v1/account")
 @RestController
@@ -37,8 +36,9 @@ class AccountController(
                 AccountAuthenticationCommand.SignIn(
                     request.email,
                     request.password)))
-        println(messageSource.getMessage("sign-in.success", listOf(responseDto.accessToken, responseDto.refreshToken).toTypedArray(), Locale.ENGLISH))
-        println(messageSource.getMessage("sign-in.success", listOf(responseDto.accessToken, responseDto.refreshToken).toTypedArray(), Locale.KOREA))
+        println(messageSource.getMessage("sign-in.success",
+            listOf(responseDto.accessToken, responseDto.refreshToken).toTypedArray(),
+            request.displayLanguage.toLocale()))
         return responseDto
     }
 
