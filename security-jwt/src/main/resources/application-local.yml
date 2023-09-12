@@ -6,7 +6,8 @@ spring:
     activate:
       on-profile: local
   r2dbc:
-    url: r2dbc:mysql://
+#    url: r2dbc:mysql://localhost:3306/spring_boot_kotlin?serverZoneId=Asia/Seoul&sslMode=DISABLED
+    url: r2dbc:mysql://host.docker.internal:3306/spring_boot_kotlin?serverZoneId=Asia/Seoul&sslMode=DISABLED
     username:
     password:
     pool:
