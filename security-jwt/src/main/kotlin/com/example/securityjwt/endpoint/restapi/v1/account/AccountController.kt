@@ -46,8 +46,8 @@ class AccountController(
     @ResponseStatus(HttpStatus.OK)
     suspend fun refresh(
         @RequestBody @Valid request: AccountSignInRefreshRequestDto
-    ): AccountSignInResponseDto {
-        return AccountSignInResponseDto(
+    ): AccountSignInRefreshResponseDto {
+        return AccountSignInRefreshResponseDto(
             accountAuthenticationUseCase.refreshSignIn(
                 AccountAuthenticationCommand.SignInRefresh(
                     request.accessToken,
