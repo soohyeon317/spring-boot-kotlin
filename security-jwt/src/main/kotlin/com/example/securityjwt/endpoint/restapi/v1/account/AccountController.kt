@@ -22,8 +22,8 @@ class AccountController(
         return AccountSignUpResponseDto(
             accountAuthenticationUseCase.signUp(
                 AccountAuthenticationCommand.SignUp(
-                    request.email,
-                    request.password)))
+                    request.email!!,
+                    request.password!!)))
     }
 
     @PostMapping("/sign-in")
@@ -34,11 +34,11 @@ class AccountController(
         val responseDto = AccountSignInResponseDto(
             accountAuthenticationUseCase.signIn(
                 AccountAuthenticationCommand.SignIn(
-                    request.email,
-                    request.password)))
+                    request.email!!,
+                    request.password!!)))
         println(messageSource.getMessage("sign-in.success",
             listOf(responseDto.accessToken, responseDto.refreshToken).toTypedArray(),
-            request.displayLanguage.toLocale()))
+            request.displayLanguage!!.toLocale()))
         return responseDto
     }
 
@@ -50,15 +50,17 @@ class AccountController(
         return AccountSignInRefreshResponseDto(
             accountAuthenticationUseCase.refreshSignIn(
                 AccountAuthenticationCommand.SignInRefresh(
-                    request.accessToken,
-                    request.refreshToken)))
+                    request.accessToken!!,
+                    request.refreshToken!!)))
     }
 
     @PostMapping("/sign-out")
     @ResponseStatus(HttpStatus.OK)
-    suspend fun signOut(@RequestBody @Valid request: AccountSignOutRequestDto): AccountSignOutResponseDto {
+    suspend fun signOut(
+        @RequestBody @Valid request: AccountSignOutRequestDto
+    ): AccountSignOutResponseDto {
         return AccountSignOutResponseDto(
             accountAuthenticationUseCase.signOut(
-                AccountAuthenticationCommand.SignOut(request.accessToken)))
+                AccountAuthenticationCommand.SignOut(request.accessToken!!)))
     }
 }
