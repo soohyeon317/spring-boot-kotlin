@@ -55,6 +55,10 @@
     <!-- 사적인 채팅 -->
     <div class="row">
         <div class="col-md-6">
+            <label for="private-chat-room">Room: </label>
+            <input type="text" id="private-chat-room" class="form-control" placeholder="Input where to enter.">
+            <button id="private-chat-room-btn" class="btn btn-default" type="submit">Enter</button>
+            <br>
             <form class="form-inline">
                 <div class="form-group">
                     <label for="private-chat-connect">WebSocket PrivateChat connection:</label>
@@ -69,8 +73,8 @@
                 <div class="form-group">
                     <label for="private-chat-msg">Message: </label>
                     <input type="text" id="private-chat-msg" class="form-control" placeholder="Input what to say.">
+                    <button id="private-chat-send" class="btn btn-default" type="submit">Send</button>
                 </div>
-                <button id="private-chat-send" class="btn btn-default" type="submit">Send</button>
             </form>
         </div>
     </div>
