@@ -14,7 +14,7 @@ class ChatController(
     @Throws(Exception::class)
     fun publicChatting(message: PublicChatSendMessage) {
         Thread.sleep(1000) // simulated delay
-        simpMessagingTemplate.convertAndSend("/sub/public-room-messages", "Hello, " + HtmlUtils.htmlEscape(message.content!!) + "!")
+        simpMessagingTemplate.convertAndSend("/sub/public-room", "Hello, " + HtmlUtils.htmlEscape(message.content!!) + "!")
     }
 
     @MessageMapping("/private-room")

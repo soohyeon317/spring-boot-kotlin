@@ -5,7 +5,7 @@ const publicChatStompClient = new StompJs.Client({
 publicChatStompClient.onConnect = (frame) => {
     setConnectedPublicChat(true);
     console.log('Connected: ' + frame);
-    publicChatStompClient.subscribe('/sub/public-room-messages', (greeting) => {
+    publicChatStompClient.subscribe('/sub/public-room', (greeting) => {
         showPublicChat(greeting.body);
     });
 };
