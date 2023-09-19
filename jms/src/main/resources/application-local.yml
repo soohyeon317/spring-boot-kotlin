@@ -1,0 +1,15 @@
+server:
+  port: 5000
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  artemis:
+    mode: embedded
+  jms:
+    pub-sub-domain: false
+
+jms:
+  destination:
+    sign-up-welcome-message: "signUpWelcomeMessage"

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: spring-boot-kotlin
+  main:
+    allow-bean-definition-overriding: true
