@@ -10,9 +10,9 @@ class AuthTokenRepositoryImpl(
     private val springDataAuthTokenRepository: SpringDataAuthTokenRepository
 ) : AuthTokenRepository {
 
-    override suspend fun save(authToken: AuthToken, inactivate: Boolean?): AuthToken {
+    override suspend fun save(authToken: AuthToken, willInactivate: Boolean?): AuthToken {
         val authTokenEntity = springDataAuthTokenRepository.save(
-            AuthTokenEntity(authToken, inactivate)
+            AuthTokenEntity(authToken, willInactivate)
         ).awaitSingle()
         return authTokenEntity.toAccessToken()
     }
@@ -22,4 +22,8 @@ class AuthTokenRepositoryImpl(
 
     override suspend fun findBy(accountId: Long, accessToken: String): AuthToken? =
         springDataAuthTokenRepository.findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(accountId, accessToken)?.toAccessToken()
+
+    override suspend fun findAllByAccountId(accountId: Long): List<AuthToken> {
+        return springDataAuthTokenRepository.findAllByAccountIdAndDeletedAtIsNull(accountId).map { it.toAccessToken() }
+    }
 }

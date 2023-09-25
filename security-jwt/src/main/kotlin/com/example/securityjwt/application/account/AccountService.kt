@@ -66,4 +66,22 @@ class AccountService(
             ?: throw AuthTokenNotFoundException(ErrorCode.ACCESS_TOKEN_NOT_FOUND)
         return authTokenDomainService.inactivate(authToken)
     }
+
+    override suspend fun withdraw(command: AccountAuthenticationCommand.Withdraw): Account {
+        val accountId = authenticationService.getAccountId()
+        val account = accountDomainService.getById(accountId)
+            ?: throw AccountNotFoundException(ErrorCode.ACCESS_TOKEN_INVALID)
+        if (!passwordEncoder.matches(command.password, account.password)) {
+            throw RequestParameterInvalidException(ErrorCode.PASSWORD_INVALID)
+        }
+        inactivateAuthTokens(accountId)
+        return accountDomainService.delete(account)
+    }
+
+    private suspend fun inactivateAuthTokens(accountId: Long) {
+        val authTokenList = authTokenDomainService.getListByAccountId(accountId)
+        for (authToken in authTokenList) {
+            authTokenDomainService.inactivate(authToken)
+        }
+    }
 }

@@ -16,4 +16,14 @@ class AccountDomainService(
     suspend fun getBy(email: String): Account? {
         return accountRepository.findBy(email)
     }
+
+    suspend fun getById(id: Long): Account? {
+        return accountRepository.findById(id)
+    }
+
+    suspend fun delete(account: Account): Account {
+        return accountRepository.save(
+            account, true
+        )
+    }
 }

@@ -6,4 +6,5 @@ interface SpringDataAuthTokenRepository : R2dbcRepository<AuthTokenEntity, Long>
 
     suspend fun findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken: String): AuthTokenEntity?
     suspend fun findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(accountId: Long, accessToken: String): AuthTokenEntity?
+    suspend fun findAllByAccountIdAndDeletedAtIsNull(accountId: Long): List<AuthTokenEntity>
 }

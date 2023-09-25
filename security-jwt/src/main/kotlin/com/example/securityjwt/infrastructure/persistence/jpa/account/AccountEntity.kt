@@ -17,7 +17,7 @@ data class AccountEntity (
     val deletedAt: LocalDateTime?
 ) {
 
-    constructor(account: Account) :
+    constructor(account: Account, willDelete: Boolean? = null) :
             this(
                 id = account.id,
                 email = account.email,
@@ -32,7 +32,11 @@ data class AccountEntity (
                 } else {
                     null
                 },
-                deletedAt = account.deletedAt
+                deletedAt = if (willDelete != null && willDelete == true) {
+                    LocalDateTime.now()
+                } else {
+                    null
+                }
             )
 
     fun toAccount(): Account = Account(

@@ -9,4 +9,5 @@ interface AccountAuthenticationUseCase {
     suspend fun signIn(command: AccountAuthenticationCommand.SignIn): AuthToken
     suspend fun refreshSignIn(command: AccountAuthenticationCommand.SignInRefresh): AuthToken
     suspend fun signOut(command: AccountAuthenticationCommand.SignOut): AuthToken
+    suspend fun withdraw(command: AccountAuthenticationCommand.Withdraw): Account
 }

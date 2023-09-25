@@ -21,6 +21,10 @@ class AuthTokenDomainService(
         return authTokenRepository.findBy(accountId, accessToken)
     }
 
+    suspend fun getListByAccountId(accountId: Long): List<AuthToken> {
+        return authTokenRepository.findAllByAccountId(accountId)
+    }
+
     suspend fun update(authToken: AuthToken): AuthToken {
         return authTokenRepository.save(authToken)
     }

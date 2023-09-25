@@ -63,4 +63,14 @@ class AccountController(
             accountAuthenticationUseCase.signOut(
                 AccountAuthenticationCommand.SignOut(request.accessToken!!)))
     }
+
+    @PostMapping("/withdraw")
+    @ResponseStatus(HttpStatus.OK)
+    suspend fun withdraw(
+        @RequestBody @Valid request: AccountWithdrawRequestDto
+    ): AccountWithdrawResponseDto {
+        return AccountWithdrawResponseDto(
+            accountAuthenticationUseCase.withdraw(
+                AccountAuthenticationCommand.Withdraw(request.password!!)))
+    }
 }
