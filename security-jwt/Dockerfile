@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17 as builder
+FROM eclipse-temurin:17 AS builder
 WORKDIR application
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} application.jar
