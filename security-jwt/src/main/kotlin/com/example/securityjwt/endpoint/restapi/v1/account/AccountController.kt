@@ -7,7 +7,7 @@ import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/api/v1/account")
+@RequestMapping("/api/v1/accounts")
 @RestController
 class AccountController(
     private val accountAuthenticationUseCase: AccountAuthenticationUseCase,

@@ -32,9 +32,9 @@ class WebSecurityConfiguration(
             }
             .authorizeExchange {
                 it.pathMatchers(
-                    "/api/v1/account/sign-up",
-                    "/api/v1/account/sign-in",
-                    "/api/v1/account/sign-in/refresh"
+                    "/api/v1/accounts/sign-up",
+                    "/api/v1/accounts/sign-in",
+                    "/api/v1/accounts/sign-in/refresh"
                 ).permitAll().anyExchange().authenticated()
             }
             .securityContextRepository(securityContextRepository)
