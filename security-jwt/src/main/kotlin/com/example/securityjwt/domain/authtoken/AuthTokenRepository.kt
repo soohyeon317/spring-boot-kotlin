@@ -1,8 +1,5 @@
 package com.example.securityjwt.domain.authtoken
 
-import org.springframework.stereotype.Repository
-
-@Repository
 interface AuthTokenRepository {
 
     suspend fun save(authToken: AuthToken, willInactivate: Boolean? = null): AuthToken
