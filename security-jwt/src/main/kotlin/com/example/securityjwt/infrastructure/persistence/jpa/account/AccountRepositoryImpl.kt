@@ -19,8 +19,7 @@ class AccountRepositoryImpl(
 
     override suspend fun findBy(email: String): Account? {
         val accountEntity = springDataAccountRepository.findByEmailAndDeletedAtIsNull(email)
-            ?: return null
-        return accountEntity.toAccount()
+        return accountEntity?.toAccount()
     }
 
     override suspend fun findById(id: Long): Account? {

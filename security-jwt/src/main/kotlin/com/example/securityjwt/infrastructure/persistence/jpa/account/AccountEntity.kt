@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
 
-@Table(name = "account")
+@Table("account")
 data class AccountEntity (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     val email: String,
