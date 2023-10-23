@@ -24,10 +24,6 @@ fun main(args: Array<String>) {
                 "org.springframework.validation.beanvalidation.SpringValidatorAdapter",
                 "validate"
             )
-            it.allowBlockingCallsInside(
-                "org.springframework.data.repository.core.support.RepositoryMethodInvoker",
-                "doInvokeReactiveToSuspended"
-            )
         })
     }
     runApplication<SecurityJwtApplication>(*args)
