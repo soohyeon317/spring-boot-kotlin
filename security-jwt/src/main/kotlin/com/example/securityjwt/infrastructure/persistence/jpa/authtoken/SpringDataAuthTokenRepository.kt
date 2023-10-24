@@ -1,10 +1,12 @@
 package com.example.securityjwt.infrastructure.persistence.jpa.authtoken
 
 import org.springframework.data.r2dbc.repository.R2dbcRepository
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 interface SpringDataAuthTokenRepository : R2dbcRepository<AuthTokenEntity, Long> {
 
-    suspend fun findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken: String): AuthTokenEntity?
-    suspend fun findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(accountId: Long, accessToken: String): AuthTokenEntity?
-    suspend fun findAllByAccountIdAndDeletedAtIsNull(accountId: Long): List<AuthTokenEntity>
+    fun findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken: String): Mono<AuthTokenEntity>
+    fun findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(accountId: Long, accessToken: String): Mono<AuthTokenEntity>
+    fun findAllByAccountIdAndDeletedAtIsNull(accountId: Long): Flux<AuthTokenEntity>
 }

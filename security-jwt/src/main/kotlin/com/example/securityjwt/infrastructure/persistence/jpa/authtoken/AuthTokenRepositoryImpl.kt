@@ -2,39 +2,41 @@ package com.example.securityjwt.infrastructure.persistence.jpa.authtoken
 
 import com.example.securityjwt.domain.authtoken.AuthToken
 import com.example.securityjwt.domain.authtoken.AuthTokenRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Repository
 
 @Repository
 class AuthTokenRepositoryImpl(
-    private val springDataAuthTokenRepository: SpringDataAuthTokenRepository
+    private val springDataAuthTokenRepository: SpringDataAuthTokenRepository,
+    private val ioDispatcher: CoroutineDispatcher
 ) : AuthTokenRepository {
 
-    override suspend fun save(authToken: AuthToken, willInactivate: Boolean?): AuthToken {
-        val authTokenEntity = withContext(Dispatchers.IO) {
-            springDataAuthTokenRepository.save(
-                AuthTokenEntity(authToken, willInactivate)
-            ).awaitSingle()
-        }
-        return authTokenEntity.toAccessToken()
+    override suspend fun save(authToken: AuthToken, willInactivate: Boolean?): AuthToken = withContext(ioDispatcher) {
+        springDataAuthTokenRepository.save(
+            AuthTokenEntity(authToken, willInactivate)
+        ).awaitSingle().toAccessToken()
     }
 
-    override suspend fun findBy(accessToken: String): AuthToken? = withContext(Dispatchers.IO) {
-        springDataAuthTokenRepository.findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken)?.toAccessToken()
+    override suspend fun findBy(accessToken: String): AuthToken? = withContext(ioDispatcher) {
+        springDataAuthTokenRepository.findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken)
+            .awaitSingleOrNull()?.toAccessToken()
     }
 
-    override suspend fun findBy(accountId: Long, accessToken: String): AuthToken? = withContext(Dispatchers.IO) {
+    override suspend fun findBy(accountId: Long, accessToken: String): AuthToken? = withContext(ioDispatcher) {
         springDataAuthTokenRepository.findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(
             accountId,
             accessToken
-        )?.toAccessToken()
+        ).awaitSingleOrNull()?.toAccessToken()
     }
 
-    override suspend fun findAllByAccountId(accountId: Long): List<AuthToken> {
-        return withContext(Dispatchers.IO) {
-            springDataAuthTokenRepository.findAllByAccountIdAndDeletedAtIsNull(accountId).map { it.toAccessToken() }
-        }
+    override suspend fun findAllByAccountId(accountId: Long): List<AuthToken> = withContext(ioDispatcher) {
+        springDataAuthTokenRepository.findAllByAccountIdAndDeletedAtIsNull(accountId)
+            .collectList().awaitSingle()
+            .flatMap {
+                listOf(it.toAccessToken())
+            }
     }
 }

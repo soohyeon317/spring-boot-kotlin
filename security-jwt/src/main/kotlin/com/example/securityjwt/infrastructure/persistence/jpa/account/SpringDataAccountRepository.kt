@@ -1,10 +1,11 @@
 package com.example.securityjwt.infrastructure.persistence.jpa.account
 
 import org.springframework.data.r2dbc.repository.R2dbcRepository
+import reactor.core.publisher.Mono
 
 interface SpringDataAccountRepository : R2dbcRepository<AccountEntity, Long> {
 
-    suspend fun findByEmailAndDeletedAtIsNull(email: String): AccountEntity?
+    fun findTopByEmailAndDeletedAtIsNull(email: String): Mono<AccountEntity>
 
-    suspend fun findByIdAndDeletedAtIsNull(id: Long): AccountEntity?
+    fun findTopByIdAndDeletedAtIsNull(id: Long): Mono<AccountEntity>
 }
