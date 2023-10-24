@@ -10,6 +10,8 @@ import com.example.securityjwt.exception.AccountNotFoundException
 import com.example.securityjwt.exception.AuthTokenNotFoundException
 import com.example.securityjwt.exception.ErrorCode
 import com.example.securityjwt.exception.RequestParameterInvalidException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -22,7 +24,9 @@ class AccountService(
 ): AccountAuthenticationUseCase  {
 
     override suspend fun signUp(command: AccountAuthenticationCommand.SignUp): Account {
-        val encodedPassword = passwordEncoder.encode(command.password)
+        val encodedPassword = withContext(Dispatchers.IO) {
+            passwordEncoder.encode(command.password)
+        }
         return accountDomainService.create(command.email, encodedPassword)
     }
 
