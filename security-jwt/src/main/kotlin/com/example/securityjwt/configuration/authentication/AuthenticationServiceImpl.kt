@@ -1,6 +1,6 @@
 package com.example.securityjwt.configuration.authentication
 
-import com.example.securityjwt.domain.authtoken.AuthTokenDomainService
+import com.example.securityjwt.domain.authtoken.AuthTokenRepository
 import com.example.securityjwt.exception.ErrorCode
 import com.example.securityjwt.exception.UnAuthorizedException
 import io.jsonwebtoken.ExpiredJwtException
@@ -8,7 +8,6 @@ import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.SignatureException
 import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.runBlocking
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.stereotype.Service
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service
 @Service
 class AuthenticationServiceImpl(
     private val jwtUtil: JWTUtil,
-    private val authTokenDomainService: AuthTokenDomainService
+    private val authTokenRepository: AuthTokenRepository
 ) : AuthenticationService {
 
     override fun validateToken(token: String, tokenType: AuthenticationTokenType): Boolean {
@@ -52,9 +51,7 @@ class AuthenticationServiceImpl(
     override fun toAuthenticationToken(accessToken: String): AuthenticationToken =
         AuthenticationToken(jwtUtil.parseJWTClaims(accessToken))
 
-    override fun isSaved(accessToken: String): Boolean = runBlocking {
-        authTokenDomainService.getBy(accessToken) != null
-    }
+    override suspend fun isSaved(accessToken: String): Boolean = authTokenRepository.findBy(accessToken) != null
 
     override fun createToken(ownerId: Long, tokenType: AuthenticationTokenType): String =
         jwtUtil.generate(ownerId, tokenType)
