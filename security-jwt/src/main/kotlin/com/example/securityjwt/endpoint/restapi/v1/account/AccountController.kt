@@ -1,7 +1,6 @@
 package com.example.securityjwt.endpoint.restapi.v1.account
 
-import com.example.securityjwt.application.account.AccountAuthenticationCommand
-import com.example.securityjwt.application.account.AccountAuthenticationUseCase
+import com.example.securityjwt.application.account.*
 import jakarta.validation.Valid
 import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
@@ -10,7 +9,11 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v1/accounts")
 @RestController
 class AccountController(
-    private val accountAuthenticationUseCase: AccountAuthenticationUseCase,
+    private val accountSignUpUseCase: AccountSignUpUseCase,
+    private val accountSignInUseCase: AccountSignInUseCase,
+    private val accountSignInRefreshUseCase: AccountSignInRefreshUseCase,
+    private val accountSignOutUseCase: AccountSignOutUseCase,
+    private val accountWithdrawUseCase: AccountWithdrawUseCase,
     private val messageSource: MessageSource
 ) {
 
@@ -20,8 +23,8 @@ class AccountController(
         @RequestBody @Valid request: AccountSignUpRequestDto
     ): AccountSignUpResponseDto {
         return AccountSignUpResponseDto(
-            accountAuthenticationUseCase.signUp(
-                AccountAuthenticationCommand.SignUp(
+            accountSignUpUseCase.signUp(
+                AccountSignUpCommand.SignUp(
                     request.email!!,
                     request.password!!)))
     }
@@ -32,8 +35,8 @@ class AccountController(
         @RequestBody @Valid request: AccountSignInRequestDto
     ): AccountSignInResponseDto {
         val responseDto = AccountSignInResponseDto(
-            accountAuthenticationUseCase.signIn(
-                AccountAuthenticationCommand.SignIn(
+            accountSignInUseCase.signIn(
+                AccountSignInCommand.SignIn(
                     request.email!!,
                     request.password!!)))
         println(messageSource.getMessage("sign-in.success",
@@ -48,8 +51,8 @@ class AccountController(
         @RequestBody @Valid request: AccountSignInRefreshRequestDto
     ): AccountSignInRefreshResponseDto {
         return AccountSignInRefreshResponseDto(
-            accountAuthenticationUseCase.refreshSignIn(
-                AccountAuthenticationCommand.SignInRefresh(
+            accountSignInRefreshUseCase.refreshSignIn(
+                AccountSignInRefreshCommand.SignInRefresh(
                     request.accessToken!!,
                     request.refreshToken!!)))
     }
@@ -60,8 +63,8 @@ class AccountController(
         @RequestBody @Valid request: AccountSignOutRequestDto
     ): AccountSignOutResponseDto {
         return AccountSignOutResponseDto(
-            accountAuthenticationUseCase.signOut(
-                AccountAuthenticationCommand.SignOut(request.accessToken!!)))
+            accountSignOutUseCase.signOut(
+                AccountSignOutCommand.SignOut(request.accessToken!!)))
     }
 
     @PostMapping("/withdraw")
@@ -70,7 +73,7 @@ class AccountController(
         @RequestBody @Valid request: AccountWithdrawRequestDto
     ): AccountWithdrawResponseDto {
         return AccountWithdrawResponseDto(
-            accountAuthenticationUseCase.withdraw(
-                AccountAuthenticationCommand.Withdraw(request.password!!)))
+            accountWithdrawUseCase.withdraw(
+                AccountWithdrawCommand.Withdraw(request.password!!)))
     }
 }
