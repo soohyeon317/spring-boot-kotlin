@@ -20,3 +20,13 @@ jwt:
   secret-key: "QXJwVW9nRHBlMUdCeFQydGNjbXg5TFNUNUNBRkVqd3htN0swa2J2MFVxS09vdFdwaHJ5bTJaY0lRYVVMSXhNSzQzTkpIZE9pR1hHMkYwbEpIS2MzWU5wUVJzSnA2R1Q3MTNaNldLUkh3TEg5NVdkYVp2VGozT3VmTG94V0JaVjM5dTZyWmxWa1JpSDV5aGRGT1EyRzQ3d1FpNlRxOEFKbVh0MWlvbktIMFlyYUNJUWVwMnhQQnBQYklXb0hxU3RBd2pSSk5vcHlTRHJtbWpKZlU1UkNWQ2RhM3c4SkkzYnNMVlN5UDhrWTdVZ2pKelYxcjlFTmFOcmQxRXQxN1RGcg=="
   access-token-validity-in-seconds: 1800 # 30분
   refresh-token-validity-in-seconds: 1209600 # 14일
+
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  cache:
+    disabled: true

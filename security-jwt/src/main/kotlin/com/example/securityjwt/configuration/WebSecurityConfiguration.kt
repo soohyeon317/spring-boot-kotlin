@@ -36,7 +36,9 @@ class WebSecurityConfiguration(
                 it.pathMatchers(
                     "/api/v1/accounts/sign-up",
                     "/api/v1/accounts/sign-in",
-                    "/api/v1/accounts/sign-in/refresh"
+                    "/api/v1/accounts/sign-in/refresh",
+                    "/v3/api-docs/**",
+                    "/webjars/**"
                 ).permitAll().anyExchange().authenticated()
             }
             .securityContextRepository(securityContextRepository)
