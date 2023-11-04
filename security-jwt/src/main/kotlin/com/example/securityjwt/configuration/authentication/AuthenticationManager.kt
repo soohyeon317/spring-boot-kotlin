@@ -27,9 +27,9 @@ class AuthenticationManager(
             val authenticationToken = authenticationService.toAuthenticationToken(it)
             Mono.just(authenticationToken)
         }.flatMap {
-            val auth = UsernamePasswordAuthenticationToken(it.ownerId, null, null)
+            val auth = UsernamePasswordAuthenticationToken(it.accountId, null, null)
             auth.details = AuthenticationDetails(
-                ownerId = it.ownerId
+                accountId = it.accountId
             )
             Mono.just(auth)
         }
