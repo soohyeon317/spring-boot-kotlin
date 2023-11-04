@@ -8,6 +8,7 @@ import com.example.securityjwt.exception.AuthTokenNotFoundException
 import com.example.securityjwt.exception.ErrorCode
 import com.example.securityjwt.exception.RequestParameterInvalidException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountSignInRefreshService(
@@ -15,6 +16,7 @@ class AccountSignInRefreshService(
     private val authenticationService: AuthenticationService
 ): AccountSignInRefreshUseCase {
 
+    @Transactional(rollbackFor=[Exception::class])
     override suspend fun refreshSignIn(command: AccountSignInRefreshCommand.SignInRefresh): AuthToken {
         // RefreshToken 유효성 검증
         authenticationService.validateToken(command.refreshToken, AuthenticationTokenType.REFRESH)

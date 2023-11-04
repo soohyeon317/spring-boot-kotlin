@@ -9,6 +9,7 @@ import com.example.securityjwt.exception.ErrorCode
 import com.example.securityjwt.exception.RequestParameterInvalidException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountWithdrawService(
@@ -18,6 +19,7 @@ class AccountWithdrawService(
     private val authenticationService: AuthenticationService
 ): AccountWithdrawUseCase {
 
+    @Transactional(rollbackFor=[Exception::class])
     override suspend fun withdraw(command: AccountWithdrawCommand.Withdraw): Account {
         val accountId = authenticationService.getAccountId()
         val account = accountRepository.findById(accountId)

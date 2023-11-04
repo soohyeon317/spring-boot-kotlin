@@ -9,6 +9,7 @@ import com.example.securityjwt.exception.AccountNotFoundException
 import com.example.securityjwt.exception.ErrorCode
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountSignInService(
@@ -18,6 +19,7 @@ class AccountSignInService(
     private val authenticationService: AuthenticationService
 ): AccountSignInUseCase {
 
+    @Transactional(rollbackFor=[Exception::class])
     // 멀티 로그인하는 것 가능.
     override suspend fun signIn(command: AccountSignInCommand.SignIn): AuthToken {
         val account = accountRepository.findBy(command.email)
