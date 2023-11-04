@@ -1,4 +1,4 @@
-package com.vespexx.signal.serviceapi.configuration.swagger
+package com.example.securityjwt.configuration.swagger
 
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
