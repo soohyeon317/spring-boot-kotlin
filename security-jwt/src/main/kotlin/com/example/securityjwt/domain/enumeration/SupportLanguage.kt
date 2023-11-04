@@ -2,7 +2,7 @@ package com.example.securityjwt.domain.enumeration
 
 import java.util.*
 
-enum class DisplayLanguage {
+enum class SupportLanguage {
 
     KO {
         override fun toLocale(): Locale = Locale.KOREA!!

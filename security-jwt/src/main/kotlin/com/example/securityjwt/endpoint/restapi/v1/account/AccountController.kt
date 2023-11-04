@@ -41,7 +41,7 @@ class AccountController(
                     request.password!!)))
         println(messageSource.getMessage("sign-in.success",
             listOf(responseDto.accessToken, responseDto.refreshToken).toTypedArray(),
-            request.displayLanguage!!.toLocale()))
+            request.supportLanguage!!.toLocale()))
         return responseDto
     }
 
