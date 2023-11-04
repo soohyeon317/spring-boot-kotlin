@@ -27,13 +27,13 @@ class AccountWithdrawService(
         if (!passwordEncoder.matches(command.password, account.password)) {
             throw RequestParameterInvalidException(ErrorCode.PASSWORD_INVALID)
         }
-        inactivateAuthTokens(accountId)
+        deleteAuthTokens(accountId)
         return accountRepository.save(
             account, true
         )
     }
 
-    private suspend fun inactivateAuthTokens(accountId: Long) {
+    private suspend fun deleteAuthTokens(accountId: Long) {
         val authTokenList = authTokenRepository.findAllByAccountIdAndDeletedAtIsNull(accountId)
         for (authToken in authTokenList) {
             authTokenRepository.save(authToken, true)
