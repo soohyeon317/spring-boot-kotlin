@@ -19,7 +19,7 @@ class AccountSignOutService(
     override suspend fun signOut(command: AccountSignOutCommand.SignOut): AuthToken {
         val accountId = authenticationService.getAccountId()
         val selectedAccessToken = command.accessToken
-        val authToken = authTokenRepository.findBy(accountId, selectedAccessToken)
+        val authToken = authTokenRepository.findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(accountId, selectedAccessToken)
             ?: throw AuthTokenNotFoundException(ErrorCode.ACCESS_TOKEN_NOT_FOUND)
         return authTokenRepository.save(authToken, true)
     }

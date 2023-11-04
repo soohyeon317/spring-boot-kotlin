@@ -20,12 +20,12 @@ class AccountRepositoryImpl(
         ).awaitSingle().toAccount()
     }
 
-    override suspend fun findBy(email: String): Account? = withContext(ioDispatcher) {
+    override suspend fun findTopByEmailAndDeletedAtIsNull(email: String): Account? = withContext(ioDispatcher) {
         springDataAccountRepository.findTopByEmailAndDeletedAtIsNull(email).awaitSingleOrNull()?.toAccount()
     }
 
 
-    override suspend fun findById(id: Long): Account? = withContext(ioDispatcher) {
+    override suspend fun findTopByIdAndDeletedAtIsNull(id: Long): Account? = withContext(ioDispatcher) {
         springDataAccountRepository.findTopByIdAndDeletedAtIsNull(id).awaitSingleOrNull()?.toAccount()
     }
 }

@@ -20,19 +20,19 @@ class AuthTokenRepositoryImpl(
         ).awaitSingle().toAccessToken()
     }
 
-    override suspend fun findBy(accessToken: String): AuthToken? = withContext(ioDispatcher) {
+    override suspend fun finfindTopByAccessTokenAndDeletedAtIsNullOrderByIdDescBy(accessToken: String): AuthToken? = withContext(ioDispatcher) {
         springDataAuthTokenRepository.findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken)
             .awaitSingleOrNull()?.toAccessToken()
     }
 
-    override suspend fun findBy(accountId: Long, accessToken: String): AuthToken? = withContext(ioDispatcher) {
+    override suspend fun findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(accountId: Long, accessToken: String): AuthToken? = withContext(ioDispatcher) {
         springDataAuthTokenRepository.findTopByAccountIdAndAccessTokenAndDeletedAtIsNullOrderByIdDesc(
             accountId,
             accessToken
         ).awaitSingleOrNull()?.toAccessToken()
     }
 
-    override suspend fun findAllByAccountId(accountId: Long): List<AuthToken> = withContext(ioDispatcher) {
+    override suspend fun findAllByAccountIdAndDeletedAtIsNull(accountId: Long): List<AuthToken> = withContext(ioDispatcher) {
         springDataAuthTokenRepository.findAllByAccountIdAndDeletedAtIsNull(accountId)
             .collectList().awaitSingle()
             .flatMap {

@@ -22,7 +22,7 @@ class AccountSignInService(
     @Transactional(rollbackFor=[Exception::class])
     // 멀티 로그인하는 것 가능.
     override suspend fun signIn(command: AccountSignInCommand.SignIn): AuthToken {
-        val account = accountRepository.findBy(command.email)
+        val account = accountRepository.findTopByEmailAndDeletedAtIsNull(command.email)
             ?: throw AccountNotFoundException(ErrorCode.EMAIL_INVALID)
         if (!passwordEncoder.matches(command.password, account.password)) {
             throw AccountNotFoundException(ErrorCode.PASSWORD_INVALID)

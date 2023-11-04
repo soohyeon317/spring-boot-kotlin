@@ -51,7 +51,7 @@ class AuthenticationServiceImpl(
     override fun toAuthenticationToken(accessToken: String): AuthenticationToken =
         AuthenticationToken(jwtUtil.parseJWTClaims(accessToken))
 
-    override suspend fun isSaved(accessToken: String): Boolean = authTokenRepository.findBy(accessToken) != null
+    override suspend fun isSaved(accessToken: String): Boolean = authTokenRepository.finfindTopByAccessTokenAndDeletedAtIsNullOrderByIdDescBy(accessToken) != null
 
     override fun createToken(ownerId: Long, tokenType: AuthenticationTokenType): String =
         jwtUtil.generate(ownerId, tokenType)

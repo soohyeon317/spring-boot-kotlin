@@ -22,7 +22,7 @@ class AccountWithdrawService(
     @Transactional(rollbackFor=[Exception::class])
     override suspend fun withdraw(command: AccountWithdrawCommand.Withdraw): Account {
         val accountId = authenticationService.getAccountId()
-        val account = accountRepository.findById(accountId)
+        val account = accountRepository.findTopByIdAndDeletedAtIsNull(accountId)
             ?: throw AccountNotFoundException(ErrorCode.ACCESS_TOKEN_INVALID)
         if (!passwordEncoder.matches(command.password, account.password)) {
             throw RequestParameterInvalidException(ErrorCode.PASSWORD_INVALID)
@@ -34,7 +34,7 @@ class AccountWithdrawService(
     }
 
     private suspend fun inactivateAuthTokens(accountId: Long) {
-        val authTokenList = authTokenRepository.findAllByAccountId(accountId)
+        val authTokenList = authTokenRepository.findAllByAccountIdAndDeletedAtIsNull(accountId)
         for (authToken in authTokenList) {
             authTokenRepository.save(authToken, true)
         }
