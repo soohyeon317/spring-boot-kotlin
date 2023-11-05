@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
+import org.springframework.transaction.interceptor.TransactionInterceptor
 import org.springframework.web.reactive.config.EnableWebFlux
 import reactor.blockhound.BlockHound
 import java.util.*
@@ -23,6 +24,10 @@ fun main(args: Array<String>) {
             it.allowBlockingCallsInside(
                 "org.springframework.validation.beanvalidation.SpringValidatorAdapter",
                 "validate"
+            )
+            it.allowBlockingCallsInside(
+                TransactionInterceptor::class.java.name,
+                "invoke"
             )
         })
     }
