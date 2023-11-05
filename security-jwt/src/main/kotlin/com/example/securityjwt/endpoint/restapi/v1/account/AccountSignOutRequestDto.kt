@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AccountSignOutRequestDto(
     @field:NotBlank(message = "NotBlank")
-    val accessToken: String?
+    val accessToken: String? = null
 )

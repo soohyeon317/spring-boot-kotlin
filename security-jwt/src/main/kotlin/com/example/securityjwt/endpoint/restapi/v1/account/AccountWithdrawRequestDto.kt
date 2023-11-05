@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AccountWithdrawRequestDto(
     @field:NotBlank(message = "NotBlank")
-    val password: String?
+    val password: String? = null
 )

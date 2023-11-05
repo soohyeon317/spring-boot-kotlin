@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AccountSignUpRequestDto(
     @field:NotBlank(message = "NotBlank")
-    val email: String?,
+    val email: String? = null,
     @field:NotBlank(message = "NotBlank")
-    val password: String?
+    val password: String? = null
 )

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AccountSignInRefreshRequestDto(
     @field:NotBlank(message = "NotBlank")
-    val accessToken: String?,
+    val accessToken: String? = null,
     @field:NotBlank(message = "NotBlank")
-    val refreshToken: String?
+    val refreshToken: String? = null
 )
