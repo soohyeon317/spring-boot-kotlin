@@ -34,9 +34,12 @@ class WebSecurityConfiguration(
             }
             .authorizeExchange {
                 it.pathMatchers(
+                    // accounts
                     "/api/v1/accounts/sign-up",
                     "/api/v1/accounts/sign-in",
                     "/api/v1/accounts/sign-in/refresh",
+
+                    // Swagger
                     "/v3/api-docs/**",
                     "/webjars/**"
                 ).permitAll().anyExchange().authenticated()

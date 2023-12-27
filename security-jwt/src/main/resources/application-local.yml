@@ -30,3 +30,4 @@ springdoc:
     operations-sorter: alpha
   cache:
     disabled: true
+  server-url: http://localhost:5000
