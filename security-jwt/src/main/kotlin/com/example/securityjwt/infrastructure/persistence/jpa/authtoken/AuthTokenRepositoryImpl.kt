@@ -20,7 +20,7 @@ class AuthTokenRepositoryImpl(
         ).awaitSingle().toAccessToken()
     }
 
-    override suspend fun finfindTopByAccessTokenAndDeletedAtIsNullOrderByIdDescBy(accessToken: String): AuthToken? = withContext(ioDispatcher) {
+    override suspend fun findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken: String): AuthToken? = withContext(ioDispatcher) {
         springDataAuthTokenRepository.findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken)
             .awaitSingleOrNull()?.toAccessToken()
     }

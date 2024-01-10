@@ -22,7 +22,7 @@ class AccountSignInRefreshService(
         authenticationService.validateToken(command.refreshToken, AuthenticationTokenType.REFRESH)
 
         // 저장소로부터 해당 AccessToken 정보와 일치하는 AuthToken 데이터 가져오기
-        val authToken = authTokenRepository.finfindTopByAccessTokenAndDeletedAtIsNullOrderByIdDescBy(command.accessToken)
+        val authToken = authTokenRepository.findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(command.accessToken)
             ?: throw AuthTokenNotFoundException(ErrorCode.ACCESS_TOKEN_NOT_FOUND)
 
         // RefreshToken 일치 여부 검사
