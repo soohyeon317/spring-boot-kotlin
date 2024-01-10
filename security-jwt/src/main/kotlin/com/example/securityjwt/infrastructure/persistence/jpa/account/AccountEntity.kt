@@ -28,7 +28,11 @@ data class AccountEntity (
                     account.createdAt ?: LocalDateTime.now()
                 },
                 updatedAt = if (account.id != null) {
-                    LocalDateTime.now()
+                    if (willDelete == true) {
+                        account.updatedAt
+                    } else {
+                        LocalDateTime.now()
+                    }
                 } else {
                     null
                 },
