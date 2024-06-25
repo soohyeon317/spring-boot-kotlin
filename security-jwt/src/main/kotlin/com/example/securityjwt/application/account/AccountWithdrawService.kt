@@ -1,6 +1,6 @@
 package com.example.securityjwt.application.account
 
-import com.example.securityjwt.configuration.authentication.AuthenticationService
+import com.example.securityjwt.configuration.authentication.authenticationTokenManager
 import com.example.securityjwt.domain.account.Account
 import com.example.securityjwt.domain.account.AccountRepository
 import com.example.securityjwt.domain.authtoken.AuthTokenRepository
@@ -16,12 +16,12 @@ class AccountWithdrawService(
     private val accountRepository: AccountRepository,
     private val authTokenRepository: AuthTokenRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val authenticationService: AuthenticationService
+    private val authenticationTokenManager: authenticationTokenManager
 ): AccountWithdrawUseCase {
 
     @Transactional(rollbackFor=[Exception::class])
     override suspend fun withdraw(command: AccountWithdrawCommand.Withdraw): Account {
-        val accountId = authenticationService.getAccountId()
+        val accountId = authenticationTokenManager.getAccountId()
         val account = accountRepository.findTopByIdAndDeletedAtIsNull(accountId)
             ?: throw AccountNotFoundException(ErrorCode.ACCESS_TOKEN_INVALID)
         if (!passwordEncoder.matches(command.password, account.password)) {

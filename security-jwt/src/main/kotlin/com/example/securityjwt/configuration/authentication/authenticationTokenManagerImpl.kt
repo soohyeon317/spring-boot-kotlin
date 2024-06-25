@@ -13,10 +13,10 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.stereotype.Service
 
 @Service
-class AuthenticationServiceImpl(
+class authenticationTokenManagerImpl(
     private val jwtUtil: JWTUtil,
     private val authTokenRepository: AuthTokenRepository
-) : AuthenticationService {
+) : authenticationTokenManager {
 
     override fun validateToken(token: String, tokenType: AuthenticationTokenType): Boolean {
         return try {
@@ -49,7 +49,11 @@ class AuthenticationServiceImpl(
     }
 
     override fun toAuthenticationToken(accessToken: String): AuthenticationToken =
-        AuthenticationToken(jwtUtil.parseJWTClaims(accessToken))
+        if (validateToken(accessToken, AuthenticationTokenType.ACCESS)) {
+            AuthenticationToken(jwtUtil.parseJWTClaims(accessToken))
+        } else {
+            throw UnAuthorizedException(ErrorCode.ACCESS_TOKEN_INVALID)
+        }
 
     override suspend fun isSaved(accessToken: String): Boolean = authTokenRepository.findTopByAccessTokenAndDeletedAtIsNullOrderByIdDesc(accessToken) != null
 

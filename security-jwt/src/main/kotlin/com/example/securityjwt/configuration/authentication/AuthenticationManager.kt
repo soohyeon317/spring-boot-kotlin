@@ -11,21 +11,18 @@ import reactor.core.publisher.Mono
 
 @Component
 class AuthenticationManager(
-    private val authenticationService: AuthenticationService
+    private val authenticationTokenManager: authenticationTokenManager
 ) : ReactiveAuthenticationManager {
 
     override fun authenticate(authentication: Authentication): Mono<Authentication> {
         return mono {
             val accessToken = authentication.credentials.toString()
-            if (!authenticationService.validateToken(accessToken, AuthenticationTokenType.ACCESS)) {
-                throw UnAuthorizedException(ErrorCode.ACCESS_TOKEN_INVALID)
-            } else if (!authenticationService.isSaved(accessToken)) {
+            val authenticationToken = authenticationTokenManager.toAuthenticationToken(accessToken)
+            if (!authenticationTokenManager.isSaved(accessToken)) {
+                // 만료되지 않은 토큰에 대한 강제 로그아웃 처리가 필요한 경우
                 throw UnAuthorizedException(ErrorCode.ACCESS_TOKEN_NOT_FOUND)
             }
-            accessToken
-        }.flatMap {
-            val authenticationToken = authenticationService.toAuthenticationToken(it)
-            Mono.just(authenticationToken)
+            authenticationToken
         }.flatMap {
             val auth = UsernamePasswordAuthenticationToken(it.accountId, null, null)
             auth.details = AuthenticationDetails(

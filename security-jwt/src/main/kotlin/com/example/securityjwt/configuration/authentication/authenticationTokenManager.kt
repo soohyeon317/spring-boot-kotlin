@@ -1,6 +1,6 @@
 package com.example.securityjwt.configuration.authentication
 
-interface AuthenticationService {
+interface authenticationTokenManager {
 
     fun validateToken(token: String, tokenType: AuthenticationTokenType): Boolean
     fun toAuthenticationToken(accessToken: String): AuthenticationToken

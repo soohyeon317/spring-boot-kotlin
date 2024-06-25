@@ -1,6 +1,6 @@
 package com.example.securityjwt.application.account
 
-import com.example.securityjwt.configuration.authentication.AuthenticationService
+import com.example.securityjwt.configuration.authentication.authenticationTokenManager
 import com.example.securityjwt.configuration.authentication.AuthenticationTokenType
 import com.example.securityjwt.domain.account.AccountRepository
 import com.example.securityjwt.domain.authtoken.AuthToken
@@ -16,7 +16,7 @@ class AccountSignInService(
     private val accountRepository: AccountRepository,
     private val authTokenRepository: AuthTokenRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val authenticationService: AuthenticationService
+    private val authenticationTokenManager: authenticationTokenManager
 ): AccountSignInUseCase {
 
     @Transactional(rollbackFor=[Exception::class])
@@ -28,8 +28,8 @@ class AccountSignInService(
             throw AccountNotFoundException(ErrorCode.PASSWORD_INVALID)
         }
         val accountId = account.id!!
-        val accessToken = authenticationService.createToken(accountId, AuthenticationTokenType.ACCESS)
-        val refreshToken = authenticationService.createToken(accountId, AuthenticationTokenType.REFRESH)
+        val accessToken = authenticationTokenManager.createToken(accountId, AuthenticationTokenType.ACCESS)
+        val refreshToken = authenticationTokenManager.createToken(accountId, AuthenticationTokenType.REFRESH)
         return authTokenRepository.save(
             AuthToken(accountId, accessToken, refreshToken)
         )
