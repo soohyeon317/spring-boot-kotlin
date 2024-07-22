@@ -13,7 +13,7 @@ data class AuthenticationToken(
     companion object {
         const val ACCOUNT_ID_CLAIM_KEY = "accountId"
         const val TOKEN_TYPE_CLAIM_KEY = "tokenType"
-        const val TOKEN_GRANT_TYPE = "bearer"
+        const val BEARER_TOKEN_AUTH_TYPE = "bearer"
     }
 
     constructor(claims: Claims) : this(

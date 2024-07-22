@@ -15,15 +15,18 @@ class SecurityContextRepository(
     val authenticationManager: AuthenticationManager
 ) : ServerSecurityContextRepository {
 
+    val authDelimiter = " "
+
     override fun save(exchange: ServerWebExchange?, context: SecurityContext?): Mono<Void> {
         return Mono.empty()
     }
 
     override fun load(exchange: ServerWebExchange): Mono<SecurityContext> {
+        val authorizationHeaderPrefix = AuthenticationToken.BEARER_TOKEN_AUTH_TYPE.plus(authDelimiter)
         return Mono.justOrEmpty(exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION))
-            .filter { auth -> auth.startsWith(AuthenticationToken.TOKEN_GRANT_TYPE, true) }
+            .filter { auth -> auth.startsWith(authorizationHeaderPrefix, true) }
             .flatMap { auth ->
-                val accessToken: String = auth.replace(AuthenticationToken.TOKEN_GRANT_TYPE, "", true).trim()
+                val accessToken: String = auth.replace(authorizationHeaderPrefix, "", true).trim()
                 val authentication: Authentication = UsernamePasswordAuthenticationToken(accessToken, accessToken)
                 authenticationManager.authenticate(authentication).map { s -> SecurityContextImpl(s) }
             }
