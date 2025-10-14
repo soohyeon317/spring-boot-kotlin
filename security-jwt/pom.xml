@@ -78,11 +78,18 @@
             <version>1.6.0</version>
         </dependency>
 
-        <!-- r2dbc mysql -->
+<!--        &lt;!&ndash; r2dbc mysql &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.jasync-sql</groupId>-->
+<!--            <artifactId>jasync-r2dbc-mysql</artifactId>-->
+<!--            <version>2.2.4</version>-->
+<!--        </dependency>-->
+
+        <!-- R2DBC PostgreSQL Driver -->
         <dependency>
-            <groupId>com.github.jasync-sql</groupId>
-            <artifactId>jasync-r2dbc-mysql</artifactId>
-            <version>2.2.4</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>r2dbc-postgresql</artifactId>
+            <version>1.1.0.RELEASE</version>
         </dependency>
 
         <!-- lombok -->
