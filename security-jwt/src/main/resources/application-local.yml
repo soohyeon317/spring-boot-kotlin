@@ -14,6 +14,7 @@ spring:
     pool:
       validation-query: SELECT 1
       initial-size: 2
+      max-size: 50
       max-idle-time: 25s
       max-life-time: 30s
 
