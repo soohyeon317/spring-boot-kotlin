@@ -6,11 +6,11 @@ spring:
     activate:
       on-profile: local
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/spring_boot_kotlin?serverZoneId=Asia/Seoul
-#    url: r2dbc:mysql://localhost:3306/spring_boot_kotlin?serverZoneId=Asia/Seoul&sslMode=DISABLED
-#    url: r2dbc:mysql://host.docker.internal:3306/spring_boot_kotlin?serverZoneId=Asia/Seoul&sslMode=DISABLED # Docker Container 실행 시 필요.
-    username:
-    password:
+    url: r2dbc:postgresql://localhost:5432/~~~~~
+#    url: r2dbc:mysql://localhost:3306/~~~~~?serverZoneId=Asia/Seoul&sslMode=DISABLED
+#    url: r2dbc:mysql://host.docker.internal:3306/~~~~~?serverZoneId=Asia/Seoul&sslMode=DISABLED # Docker Container 실행 시 필요.
+    username: ~~~~~
+    password: ~~~~~
     pool:
       validation-query: SELECT 1
       initial-size: 2
@@ -19,7 +19,7 @@ spring:
       max-life-time: 30s
 
 jwt:
-  secret-key: "QXJwVW9nRHBlMUdCeFQydGNjbXg5TFNUNUNBRkVqd3htN0swa2J2MFVxS09vdFdwaHJ5bTJaY0lRYVVMSXhNSzQzTkpIZE9pR1hHMkYwbEpIS2MzWU5wUVJzSnA2R1Q3MTNaNldLUkh3TEg5NVdkYVp2VGozT3VmTG94V0JaVjM5dTZyWmxWa1JpSDV5aGRGT1EyRzQ3d1FpNlRxOEFKbVh0MWlvbktIMFlyYUNJUWVwMnhQQnBQYklXb0hxU3RBd2pSSk5vcHlTRHJtbWpKZlU1UkNWQ2RhM3c4SkkzYnNMVlN5UDhrWTdVZ2pKelYxcjlFTmFOcmQxRXQxN1RGcg=="
+  secret-key: "~~~~~"
   access-token-validity-in-seconds: 1800 # 30분
   refresh-token-validity-in-seconds: 1209600 # 14일
 
